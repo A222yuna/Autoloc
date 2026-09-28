@@ -1,12 +1,17 @@
-package tn.esprit.autoloc.domain;
+package tn.esprit.autoloc.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "contrat")
@@ -28,4 +33,11 @@ public class Contrat {
 
     @Column(nullable = false)
     private boolean valide;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_reservation", unique = true)
+    private Reservation reservation;
+
+    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Paiement> paiements = new ArrayList<>();
 }
